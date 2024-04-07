@@ -1,0 +1,26 @@
+[
+  {
+    "cardOwner": "Larzt",
+    "id": 1,
+    "name": "Lightning Bolt",
+    "mana": 1,
+    "color": "green",
+    "line": "artifact",
+    "rarity": "mythical",
+    "rules": "Lightning Bolt deals 3 damage to any target.",
+    "price": 1.99,
+    "modifier": 0
+  },
+  {
+    "cardOwner": "Larzt",
+    "id": 1,
+    "name": "Bolt",
+    "mana": 1,
+    "color": "blue",
+    "line": "artifact",
+    "rarity": "mythical",
+    "rules": "Lightning Bolt deals 3 damage to any target.",
+    "price": 1.99,
+    "modifier": 0
+  }
+]

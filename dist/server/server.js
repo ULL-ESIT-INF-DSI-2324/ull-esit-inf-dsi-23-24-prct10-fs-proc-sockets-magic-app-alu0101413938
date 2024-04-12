@@ -22,13 +22,13 @@ net.createServer((connection) => {
             case "add":
                 console.log("Se ha solicitado la creacion de una carta");
                 connection.emit('create', message, (refuse) => {
-                    response = GenerateResponse(refuse, message.name);
+                    response = GenerateResponse(refuse, `Add card with name: ${message.name}`);
                 });
                 break;
             case "remove":
-                console.log("Se ha solicitado la creacion de una carta");
+                console.log("Se ha solicitado la eliminacion de una carta");
                 connection.emit('remove', message, (refuse) => {
-                    response = GenerateResponse(refuse, message.name);
+                    response = GenerateResponse(refuse, `Remove card with id: ${message.id}`);
                 });
                 break;
             default:
@@ -44,6 +44,10 @@ net.createServer((connection) => {
             rules: rules, price: price, modifier: modifier
         };
         callback(FileManager.Instance().writeOnFile(user, newCard));
+    });
+    connection.on('remove', (info, callback) => {
+        const { user, id } = info;
+        callback(FileManager.Instance().removeFromFile(user, id));
     });
 }).listen(PORT, () => {
     console.log(`Waiting for clients to connect on PORT: ${PORT}`);

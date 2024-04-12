@@ -30,25 +30,22 @@ export class FileManager {
         }
         return refuse;
     }
-    removeFromFile(filePath, cardToRemove) {
+    removeFromFile(filePath, idToRemove) {
         let refuse = false;
         const directory = `database/${filePath.toLocaleLowerCase()}`;
-        const fullPath = `${directory}/${cardToRemove.name}.json`;
+        const fullPath = `${directory}/${idToRemove}.json`;
+        console.log(directory);
+        console.log(fullPath);
         if (!fs.existsSync(directory) || !fs.existsSync(fullPath)) {
             refuse = true;
             return refuse;
         }
         else {
             try {
-                const fileContent = fs.readFileSync(fullPath, 'utf-8');
-                const cards = JSON.parse(fileContent);
-                // Almacena todas las cartas que no coincidan
-                const filteredCards = cards.filter((card) => {
-                    return card.id !== cardToRemove.id;
-                });
-                fs.writeFileSync(fullPath, JSON.stringify(filteredCards, null, 2));
+                fs.unlinkSync(fullPath);
             }
             catch (err) {
+                refuse = true;
                 console.error(`'Error al eliminar cartas coincidentes del archivo. Error: ${err.code}, Operacion: ${err.syscall}`);
             }
         }
@@ -73,14 +70,14 @@ export class FileManager {
                     return JSON.stringify(currentCard) === JSON.stringify(card);
                 }
                 catch (err) {
+                    return true;
                     console.error(`'Error al parsear el archivo JSON. Error: ${err.code}, Operacion: ${err.syscall}`);
-                    return false;
                 }
             }
         }
         catch (err) {
+            return true;
             console.error(`'Error al leer el archivo JSON. Error: ${err.code}, Operacion: ${err.syscall}`);
-            return false;
         }
     }
 }

@@ -13,6 +13,10 @@ export function createInputWithYargs() {
         rules: { type: "string", demandOption: true },
         price: { type: "number", demandOption: true },
     })
+        .command("remove", "Eliminar una carta del inventario", {
+        user: { type: "string", demmandOption: true },
+        id: { type: "number", demmandOption: true }
+    })
         .help()
         .argv;
 }

@@ -1,5 +1,7 @@
 export function GenerateResponse(code :boolean, cardName :string) :string {
-  let response = ""; 
+  let response = "";
+  console.log('Generate refuse: ', code);
+  
   if (!code) {
     response = `{"type": "response", "code": "accepted", "response": "Accepted: ${cardName}."}\n`;
   } else {

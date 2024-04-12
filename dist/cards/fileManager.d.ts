@@ -4,5 +4,5 @@ export declare class FileManager {
     constructor();
     static Instance(): FileManager;
     writeOnFile(filePath: string, card: CardData): boolean;
-    removeFromFile(filePath: string, idToRemove: number): boolean;
+    removeFromFile(filePath: string, idToRemove: number, callback: (refuse: boolean) => void): void;
 }

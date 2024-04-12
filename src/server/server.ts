@@ -27,21 +27,25 @@ net.createServer((connection) => {
       case "add":
         console.log("Se ha solicitado la creacion de una carta");
         connection.emit('create', message, (refuse :boolean) => {
+          console.log('Emit Add refuse:', refuse);
           response = GenerateResponse(refuse, `Add card with name: ${message.name}`);
+          connection.write(response);  
         })
         break;
       case "remove":
         console.log("Se ha solicitado la eliminacion de una carta");
         connection.emit('remove', message, (refuse :boolean) => {
+          console.log('Emit Remove refuse:', refuse);
           response = GenerateResponse(refuse, `Remove card with id: ${message.id}`);
+          connection.write(response);
         })
         break;
       default:
         console.log("The request could not be processed");
         response = GenerateResponse(true, `Can not .`);
+        connection.write(response);
         break;
     }
-    connection.write(response);
   })
 
   connection.on('create', (cardInfo, callback) => {
@@ -60,7 +64,11 @@ net.createServer((connection) => {
 
   connection.on('remove', (info, callback) => {
     const {user, id} = info;
-    callback(FileManager.Instance().removeFromFile(user, id));
+    FileManager.Instance().removeFromFile(user, id, (refuse :boolean) => {
+      console.log('Remove refuse:', refuse);
+      
+      callback(refuse)
+    });
   })
 
 }).listen(PORT, () => {

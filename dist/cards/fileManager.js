@@ -30,23 +30,16 @@ export class FileManager {
         }
         return refuse;
     }
-    removeFromFile(filePath, idToRemove) {
+    removeFromFile(filePath, idToRemove, callback) {
         let refuse = false;
         const directory = `database/${filePath.toLocaleLowerCase()}`;
         const fullPath = `${directory}/${idToRemove}.json`;
-        if (!fs.existsSync(directory) || !fs.existsSync(fullPath)) {
-            refuse = true;
-            return refuse;
-        }
-        else {
-            try {
-                fs.unlinkSync(fullPath);
-            }
-            catch (err) {
+        fs.unlink(fullPath, (err) => {
+            if (err) {
                 refuse = true;
-                console.error(`'Error al eliminar cartas coincidentes del archivo. Error: ${err.code}, Operacion: ${err.syscall}`);
+                console.error(`Error al eliminar cartas coincidentes del archivo. Error: ${err.code}, Operacion: ${err.syscall}`);
             }
-        }
-        return refuse;
+            callback(refuse);
+        });
     }
 }

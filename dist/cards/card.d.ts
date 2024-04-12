@@ -11,5 +11,5 @@ export interface CardData {
     rarity: Rarity;
     rules: string;
     price: number;
-    modifier: number;
+    special: number;
 }

@@ -32,18 +32,25 @@ net.createServer((connection) => {
                 });
                 break;
             default:
+                console.log("The request could not be processed");
+                response = GenerateResponse(true, `Can not .`);
                 break;
         }
         connection.write(response);
     });
     connection.on('create', (cardInfo, callback) => {
-        const { user, id, name, mana, color, line, rarity, rules, price, modifier } = cardInfo;
-        const newCard = {
-            cardOwner: user, id: id, name: name, mana: mana,
-            color: color, line: line, rarity: rarity,
-            rules: rules, price: price, modifier: modifier
-        };
-        callback(FileManager.Instance().writeOnFile(user, newCard));
+        const { user, id, name, mana, color, line, rarity, rules, price, special } = cardInfo;
+        if (line == "planeswalker" || line == "creature" && special == "") {
+            callback(true);
+        }
+        else {
+            const newCard = {
+                cardOwner: user, id: id, name: name, mana: mana,
+                color: color, line: line, rarity: rarity,
+                rules: rules, price: price, special: special
+            };
+            callback(FileManager.Instance().writeOnFile(user, newCard));
+        }
     });
     connection.on('remove', (info, callback) => {
         const { user, id } = info;

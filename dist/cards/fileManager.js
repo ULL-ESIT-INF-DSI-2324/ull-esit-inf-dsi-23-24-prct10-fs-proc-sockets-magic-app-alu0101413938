@@ -34,8 +34,6 @@ export class FileManager {
         let refuse = false;
         const directory = `database/${filePath.toLocaleLowerCase()}`;
         const fullPath = `${directory}/${idToRemove}.json`;
-        console.log(directory);
-        console.log(fullPath);
         if (!fs.existsSync(directory) || !fs.existsSync(fullPath)) {
             refuse = true;
             return refuse;
@@ -50,34 +48,5 @@ export class FileManager {
             }
         }
         return refuse;
-    }
-    checkIfCardExist(path, card) {
-        try {
-            const fileContent = fs.readFileSync(path, 'utf-8');
-            let currentCards;
-            try {
-                currentCards = JSON.parse(fileContent);
-                // Si el parseo fue exitoso, asumimos que el archivo contiene un array de objetos
-                return currentCards.some((currentCard) => {
-                    return JSON.stringify(currentCard) === JSON.stringify(card);
-                });
-            }
-            catch (err) {
-                try {
-                    // Si el parseo como array falla, intentamos parsearlo como un objeto único
-                    const currentCard = JSON.parse(fileContent);
-                    // Si el parseo fue exitoso, asumimos que el archivo contiene un solo objeto
-                    return JSON.stringify(currentCard) === JSON.stringify(card);
-                }
-                catch (err) {
-                    return true;
-                    console.error(`'Error al parsear el archivo JSON. Error: ${err.code}, Operacion: ${err.syscall}`);
-                }
-            }
-        }
-        catch (err) {
-            return true;
-            console.error(`'Error al leer el archivo JSON. Error: ${err.code}, Operacion: ${err.syscall}`);
-        }
     }
 }

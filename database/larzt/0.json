@@ -1,11 +1,11 @@
 {
   "cardOwner": "larzt",
   "id": 0,
-  "name": "blackLotus",
-  "mana": 100,
-  "color": "green",
-  "line": "earth",
-  "rarity": "mythical",
-  "rules": "none",
-  "price": 999
+  "name": "vampire",
+  "mana": 200,
+  "color": "multicolor",
+  "line": "creature",
+  "rarity": "rare",
+  "rules": "must be dead",
+  "price": 10
 }

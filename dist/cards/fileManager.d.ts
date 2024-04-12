@@ -5,5 +5,4 @@ export declare class FileManager {
     static Instance(): FileManager;
     writeOnFile(filePath: string, card: CardData): boolean;
     removeFromFile(filePath: string, idToRemove: number): boolean;
-    checkIfCardExist(path: string, card: CardData): boolean;
 }

@@ -27,29 +27,35 @@ net.createServer((connection) => {
       case "add":
         console.log("Se ha solicitado la creacion de una carta");
         connection.emit('create', message, (refuse :boolean) => {
-          response = GenerateResponse(refuse, `Add card with name: ${message.name}`)
+          response = GenerateResponse(refuse, `Add card with name: ${message.name}`);
         })
         break;
       case "remove":
         console.log("Se ha solicitado la eliminacion de una carta");
         connection.emit('remove', message, (refuse :boolean) => {
-          response = GenerateResponse(refuse, `Remove card with id: ${message.id}`)
+          response = GenerateResponse(refuse, `Remove card with id: ${message.id}`);
         })
         break;
       default:
+        console.log("The request could not be processed");
+        response = GenerateResponse(true, `Can not .`);
         break;
     }
     connection.write(response);
   })
 
   connection.on('create', (cardInfo, callback) => {
-    const {user, id, name, mana, color, line, rarity, rules, price, modifier} = cardInfo;
-    const newCard :CardData = {
-      cardOwner :user, id :id, name :name, mana :mana,
-      color :color, line :line, rarity :rarity,
-      rules :rules, price :price, modifier :modifier
+    const {user, id, name, mana, color, line, rarity, rules, price, special} = cardInfo;
+    if (line == "planeswalker" || line == "creature" && special == "") {
+      callback(true)
+    } else {
+      const newCard :CardData = {
+        cardOwner :user, id :id, name :name, mana :mana,
+        color :color, line :line, rarity :rarity,
+        rules :rules, price :price, special :special
+      }
+      callback(FileManager.Instance().writeOnFile(user, newCard));
     }
-    callback(FileManager.Instance().writeOnFile(user, newCard));
   })
 
   connection.on('remove', (info, callback) => {

@@ -19,19 +19,27 @@ import { createInputWithYargs } from "./utils/createInput.js";
 // LIST
 // node dist/client/client.js list --user=larzt
 
+// Comprobar eliminar carta de un usuario desconocido
+// Comprobar eliminar carta no existente
+// Comprobar actualizar carta de un usuario desconocido
+// Comprobar actualizar carta no existente
+// Comprobar mostrar carta de un usuario desconocido
+// Comprobar mostrar carta no existente
+// Comprobar listar cartas de un usuario desconocido
+
 const PORT = 3000;
 
 if (argv.length < 3) {
   console.log('Please, provide a command or use "help"');
 } else {
   const client = net.connect({ port:PORT })
-
+    
   const input = createInputWithYargs();
   const jsonCommand = JSON.stringify(input);
   client.write(jsonCommand + '\n');
-
+  
   let wholeData = '';
-  client.on('data', (dataChunk) => {
+  client.on('data', async (dataChunk) => {
     wholeData += dataChunk;
     let messageLimit = wholeData.indexOf('\n');
     while (messageLimit !== -1) {
@@ -41,7 +49,7 @@ if (argv.length < 3) {
       messageLimit = wholeData.indexOf('\n');
     }
   });
-
+  
   // respuesta que recibe del servidor
   client.on('response', (message) => {
     // console.log(`Respuesta recibida por parte del servidor: ${message}`);
@@ -52,8 +60,12 @@ if (argv.length < 3) {
     }
     client.emit('end');
   }) 
-
+  
   client.on('end', () => {
     console.log("You has been disconnected from the server.");
+  })
+
+  client.on('error', (err) => {
+    console.error(chalk.yellow(`Se produjo un error al conectar con el servidor. Error ${err.message}`));
   })
 }

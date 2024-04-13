@@ -1,0 +1,11 @@
+{
+  "cardOwner": "larzt",
+  "id": 1,
+  "name": "vampire",
+  "mana": 200,
+  "color": "multicolor",
+  "line": "creature",
+  "rarity": "rare",
+  "rules": "must be dead",
+  "price": 10
+}

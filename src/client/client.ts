@@ -2,11 +2,13 @@ import net from "net";
 import chalk from "chalk";
 import { argv } from "process";
 import { createInputWithYargs } from "./utils/createInput.js";
+import { coloredCards } from "./utils/parseCardColored.js";
+import { CardData } from "../cards/card.js";
 
 // EXAMPLE INTPUS
 // MODIFY
 // node dist/client/client.js add --user=larzt --id=0 --name=blackLotus --mana=100 --color=green --line=earth --rarity=mythical --rules=none --price=999
-// node dist/client/client.js modify --user=larzt --id=0 --name=blackLotus --mana=100 --color=green --line=earth --rarity=mythical --rules=none --price=999999
+// node dist/client/client.js update --user=larzt --id=0 --name=blackLotus --mana=100 --color=green --line=earth --rarity=mythical --rules=none --price=999999
 
 // REMOVE
 // node dist/client/client.js add --user=larzt --id=0 --name=serraAngel --mana=10 --color=red --line=earth --rarity=rare --rules=none --price=20
@@ -51,15 +53,35 @@ if (argv.length < 3) {
   });
   
   // respuesta que recibe del servidor
-  client.on('response', (message) => {
+  client.on('response', (message) => {   
     // console.log(`Respuesta recibida por parte del servidor: ${message}`);
     if (message.code == "accepted") {
-      console.log(chalk.green(message.response));
+      if (message.colored) {
+        if (message.multiple) {
+          const cards: CardData[] = JSON.parse(message.response);
+          client.emit('multiple', cards);
+        } else {
+          const card = JSON.parse(message.response)
+          client.emit('colored', card);
+        }
+      } else {
+        console.log(chalk.green(message.response));
+      }
     } else {
       console.log(chalk.red(message.response));
     }
     client.emit('end');
   }) 
+
+  client.on('multiple', (cards :CardData[]) => {
+    cards.forEach((card) => {
+      coloredCards(card);
+    });
+  });
+
+  client.on('colored', (card) => {
+    coloredCards(card);
+  });
   
   client.on('end', () => {
     console.log("You has been disconnected from the server.");

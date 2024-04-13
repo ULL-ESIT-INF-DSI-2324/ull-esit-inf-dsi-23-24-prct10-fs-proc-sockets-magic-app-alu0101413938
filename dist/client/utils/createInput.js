@@ -21,6 +21,13 @@ export function createInputWithYargs() {
         user: { type: "string", demmandOption: true },
         id: { type: "number", demmandOption: true }
     })
+        .command("show", "Mostrar una carta del inventario", {
+        user: { type: "string", demmandOption: true },
+        id: { type: "number", demmandOption: true }
+    })
+        .command("list", "Mostrar las cartas de un usuario", {
+        user: { type: "string", demmandOption: true },
+    })
         .help()
         .argv;
 }

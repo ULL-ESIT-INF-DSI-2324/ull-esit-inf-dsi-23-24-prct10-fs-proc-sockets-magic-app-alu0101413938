@@ -33,13 +33,13 @@ export class FileManager {
         callback(undefined, `Opened file: ${filePath}`)
       }
     })
+  }
     // try {
     //   this.file = fs.openSync(filePath, 'w+');
     //   console.log('La lectura del fichero se ha realizado correctamente');
     // } catch (error) {
     //   console.log(`Ha surgido un error en la operacion: ${error.syscall}`);
     // }
-  }
 
   /**
    * Reads data from the specified file and returns an array of Card objects.

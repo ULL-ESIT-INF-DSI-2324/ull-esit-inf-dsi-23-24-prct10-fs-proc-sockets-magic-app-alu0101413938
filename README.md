@@ -106,3 +106,28 @@ La aplicacion cuenta con diferentes funcionalidades:
 - REMOVE: Permite eliminar una carta del inventario
 - SHOW: Permite mostrar una carta del inventario
 - LIST: Permite mostrar el inventario
+
+
+## Modificacion realizada en la PE
+Se ha solicitado modificar los metodos de la practica anterior para utilizar los metodos Asynchronous del modulo 'fs'.
+```ts
+write = (filePath :string, cards: Card[], callback: (err :string | undefined, data :string | undefined) => void) => {
+  fs.writeFile(filePath, JSON.stringify(cards, null, 2), {flag: 'w+'}, (err :Error) => {
+    if (err) {
+      callback(`No se ha podido añadir la carta: ${err.message}`, undefined);
+    } else {
+      callback(undefined, cards.length.toString());
+    }
+  })
+}
+
+open = (filePath: string, callback :(err :Error | undefined, data :string | undefined) => void) => {
+  fs.open(filePath, (error) => {
+    if (error) {
+      callback(error, undefined);
+    } else {
+      callback(undefined, `Opened file: ${filePath}`)
+    }
+  })
+}
+```

@@ -7,6 +7,7 @@ import { CardData } from "../cards/card.js";
 
 // EXAMPLE INTPUS
 // MODIFY
+// node dist/client/client.js add --user=depdios --id=0 --name=blackLotus --mana=100 --color=green --line=earth --rarity=mythical --rules=none --price=999
 // node dist/client/client.js add --user=larzt --id=0 --name=blackLotus --mana=100 --color=green --line=earth --rarity=mythical --rules=none --price=999
 // node dist/client/client.js update --user=larzt --id=0 --name=blackLotus --mana=100 --color=green --line=earth --rarity=mythical --rules=none --price=999999
 
@@ -37,6 +38,8 @@ if (argv.length < 3) {
   const client = net.connect({ port:PORT })
     
   const input = createInputWithYargs();
+  console.log(input);
+  
   const jsonCommand = JSON.stringify(input);
   client.write(jsonCommand + '\n');
   

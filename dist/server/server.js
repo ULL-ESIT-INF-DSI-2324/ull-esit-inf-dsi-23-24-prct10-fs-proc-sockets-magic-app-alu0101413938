@@ -4,7 +4,7 @@ import { GenerateResponse } from "./utils/generateResponse.js";
 import { GenerateColoredResponse } from "./utils/generateColoredResponse.js";
 import { GenerateMultiColoredResponses } from "./utils/multiColoredResponse.js";
 const PORT = 3000;
-net.createServer((connection) => {
+export const mainServer = net.createServer((connection) => {
     console.log('A client has connected');
     let wholeData = '';
     connection.on('data', (dataChunk) => {
